@@ -34,4 +34,10 @@ jobs:
             cd /root/digital-ocean-backend-test-deploy
             git pull origin main
             npm install
+            export FIREBASE_SERVICE_ACCOUNT=${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+            export PG_HOST=${{ secrets.PG_HOST }}
+            export PG_PORT=${{ secrets.PG_PORT }}
+            export PG_DATABASE=${{ secrets.PG_DATABASE }}
+            export PG_USER=${{ secrets.PG_USER }}
+            export PG_PASSWORD=${{ secrets.PG_PASSWORD }}
             pm2 restart all
