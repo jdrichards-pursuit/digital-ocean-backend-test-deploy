@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /path/to/your/app
+            cd /root/digital-ocean-backend-test-deploy
             git pull origin main
             npm install
             pm2 restart all
