@@ -1,4 +1,4 @@
-name: Deploy Backend to DigitalOcean
+name: Deploy to DigitalOcean
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,17 +21,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables
-        run: |
-          echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
-          echo "PG_HOST=${{ secrets.PG_HOST }}" >> $GITHUB_ENV
-          echo "PG_PORT=${{ secrets.PG_PORT }}" >> $GITHUB_ENV
-          echo "PG_DATABASE=${{ secrets.PG_DATABASE }}" >> $GITHUB_ENV
-          echo "PG_USER=${{ secrets.PG_USER }}" >> $GITHUB_ENV
-          echo "PG_PASSWORD=${{ secrets.PG_PASSWORD }}" >> $GITHUB_ENV
-          echo "FIREBASE_SERVICE_ACCOUNT=${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" >> $GITHUB_ENV
-          echo "CONNECTION_STRING=${{ secrets.CONNECTION_STRING }}" >> $GITHUB_ENV
+      - name: Run tests
+        run: npm test
 
       - name: Deploy to DigitalOcean
-        run: |
-          # Your deployment script here
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /path/to/your/app
+            git pull origin main
+            npm install
+            pm2 restart all
